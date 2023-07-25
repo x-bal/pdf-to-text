@@ -2,56 +2,27 @@ version: '3.8'
 services:
   # PHP-FPM Service
   php:
-    image: php:8-fpm
-    container_name: laravel
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
-      - ./src:/var/www/html
+      - .:/var/www/html
     networks:
       - laravel_net
 
-  # Apache Service
-  apache:
-    image: httpd:2.4
-    container_name: my_laravel_apache
+  # Nginx Service (Reverse Proxy)
+  nginx:
+    image: nginx:latest
+    container_name: nginx
     volumes:
-      - ./src:/usr/local/apache2/htdocs
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/site.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "80:80"
     networks:
       - laravel_net
     depends_on:
       - php
-
-  # MySQL Service
-  mysql:
-    image: mysql:latest
-    container_name: my_laravel_mysql
-    volumes:
-      - mysql_data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: laravel_db
-      MYSQL_USER: laravel_user
-      MYSQL_PASSWORD: laravel123qwe
-    networks:
-      - laravel_net
-
-  # PhpMyAdmin Service
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: my_phpmyadmin
-    ports:
-      - "8080:80"
-    environment:
-      PMA_HOST: mysql
-      MYSQL_ROOT_PASSWORD: secret
-    networks:
-      - laravel_net
-    depends_on:
-      - mysql
-
-volumes:
-  mysql_data:
 
 networks:
   laravel_net:
