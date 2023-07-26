@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 Route::('/asd', function(){
-    return 'asd'
+    return 'asd';
 });
 
 Route::post('/testing', [DocumentController::class, 'store'])->name('documents.store');
