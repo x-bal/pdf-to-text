@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install gd pdo pdo_mysql zip
+RUN docker-php-ext-install gd pdo pdo_mysql
 
 # Enable Apache modules
 RUN a2enmod rewrite
