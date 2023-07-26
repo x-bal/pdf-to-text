@@ -40,7 +40,7 @@ class DocumentController extends Controller
 
         $text = Pdf::getText($pdfFile, '/usr/bin/pdftotext');
 
-        dd($text);
+        echo $text;
 
         // Convert PDF to text
         // return Pdf::getText($pdfFile, null);
