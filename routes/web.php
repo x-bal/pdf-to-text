@@ -18,8 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/asd', function () {
-    return 'asd';
-});
-
 Route::post('/testing', [DocumentController::class, 'store'])->name('documents.store');
