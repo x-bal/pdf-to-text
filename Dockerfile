@@ -1,5 +1,5 @@
-# Use the official PHP image with Apache as the base image
-FROM php:8.1-apache
+# Use the official PHP image with FPM as the base image
+FROM php:8.1-fpm
 
 # Set the working directory inside the container
 WORKDIR /var/www/html
@@ -26,11 +26,8 @@ RUN composer install
 # Set permissions for storage and bootstrap/cache directories
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Enable Apache rewrite module
-RUN a2enmod rewrite
+# Expose port 9000 for PHP-FPM
+EXPOSE 9000
 
-# Expose port 80
-EXPOSE 80
-
-# Start Apache when the container runs
-CMD ["apache2-foreground"]
+# Start PHP-FPM when the container runs
+CMD ["php-fpm"]
