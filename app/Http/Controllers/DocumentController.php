@@ -36,8 +36,9 @@ class DocumentController extends Controller
 
         // Get the uploaded PDF file
         $pdfFile = $request->file('file');
+        return $pdfFile;
 
-        $text = Pdf::getText($pdfFile, '/usr/local/bin/pdftotext');
+        $text = Pdf::getText($pdfFile, '/usr/bin/pdftotext');
 
         dd($text);
 
