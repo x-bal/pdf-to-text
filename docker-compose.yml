@@ -2,13 +2,14 @@ version: '3'
 
 services:
   web:
-    image: php:8.1-apache
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: my_laravel_app
     ports:
       - "80:80"
     volumes:
       - .:/var/www/html
-    working_dir: /var/www/html
     networks:
       - laravel_network
 

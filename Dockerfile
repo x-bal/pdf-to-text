@@ -1,33 +1,20 @@
-# # Use the official PHP image with FPM as the base image
-# FROM php:8.1-fpm
+FROM php:8.1-apache
 
-# # Set the working directory inside the container
-# WORKDIR /var/www/html
+# Install system dependencies and PHP extensions as needed
+# For example, if you need to install additional PHP extensions, you can do it like this:
+# RUN docker-php-ext-install pdo pdo_mysql
 
-# # Install system dependencies and PHP extensions
-# RUN apt-get update && apt-get install -y \
-#     libpng-dev \
-#     libjpeg-dev \
-#     libfreetype6-dev \
-#     zip \
-#     unzip \
-#     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-#     && docker-php-ext-install gd pdo pdo_mysql
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# # Copy the application files to the container
-# COPY . /var/www/html
+# Set the working directory
+WORKDIR /var/www/html
 
-# # Install Composer
-# RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Copy your Laravel project into the container
+COPY . /var/www/html
 
-# # Install Laravel dependencies using Composer
-# RUN composer install
+# Set appropriate permissions for Laravel
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# # Set permissions for storage and bootstrap/cache directories
-# RUN chown -R www-data:www-data storage bootstrap/cache
-
-# # Expose port 9000 for PHP-FPM
-# EXPOSE 9000
-
-# # Start PHP-FPM when the container runs
-# CMD ["php-fpm"]
+# Start Apache
+CMD ["apache2-foreground"]
